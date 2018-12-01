@@ -1,25 +1,31 @@
 import org.scalatest.FlatSpec
 
-//TODO: add more complex encoding/decoding tests and check for emptry string decodings and documentation
+/**
+  * Test class to test BoolExpressionEncoderDecoderSpec. Each test example handles different cases
+  */
 class BooleanExpressionEncoderDecoderSpec extends FlatSpec{
     "A BooleanExpressionEncoderDecoder" should "encode BooleanExpression objects to valid JSON" in {
         val encoderDecoder = new BooleanExpressionEncoderDecoder
 
         val andExp = And(True, False)
         var encoding = encoderDecoder.booleanEncode(andExp)
-        assert(encoding === "{\"And\":{\"e1\":{\"True\":{}},\"e2\":{\"False\":{}}}}")
+        var expectedResult = Some("{\"And\":{\"e1\":{\"True\":{}},\"e2\":{\"False\":{}}}}")
+        assert(encoding === expectedResult)
 
         val orExp = Or(True, True)
         encoding = encoderDecoder.booleanEncode(orExp)
-        assert(encoding === "{\"Or\":{\"e1\":{\"True\":{}},\"e2\":{\"True\":{}}}}")
+        expectedResult = Some("{\"Or\":{\"e1\":{\"True\":{}},\"e2\":{\"True\":{}}}}")
+        assert(encoding === expectedResult)
 
         val notExp = Not(False)
         encoding = encoderDecoder.booleanEncode(notExp)
-        assert(encoding === "{\"Not\":{\"e\":{\"False\":{}}}}")
+        expectedResult = Some("{\"Not\":{\"e\":{\"False\":{}}}}")
+        assert(encoding === expectedResult)
 
         val variableExp = Variable("Hello Test")
         encoding = encoderDecoder.booleanEncode(variableExp)
-        assert(encoding === "{\"Variable\":{\"symbol\":\"Hello Test\"}}")
+        expectedResult =  Some("{\"Variable\":{\"symbol\":\"Hello Test\"}}")
+        assert(encoding === expectedResult)
     }
 
     it should "decode a BooleanExpression JSON String into the proper object" in {
@@ -69,11 +75,18 @@ class BooleanExpressionEncoderDecoderSpec extends FlatSpec{
 
         //test null object for encoding
         val encoding = encoderDecoder.booleanEncode(null)
-        assert(encoding === "")
+        assert(encoding === None)
 
         //test null string for decoding
         val decoding = encoderDecoder.booleanDecode(null)
         assert(decoding === None)
+    }
 
+    it should "handle empty string inputs when attempting to decode" in {
+        val encoderDecoder = new BooleanExpressionEncoderDecoder
+
+        //test null string for decoding
+        val decoding = encoderDecoder.booleanDecode("")
+        assert(decoding === None)
     }
 }

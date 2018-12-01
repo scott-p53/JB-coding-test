@@ -7,15 +7,16 @@ class BooleanExpressionEncoderDecoder {
     /**
       *
       * @param booleanExp BooleanExpressionObject
-      * @return a JSON encoded BooleanExpressionObject or an emptry string if the expression is null
+      * @return a JSON encoded BooleanExpressionObject or an empty string if the expression is null
       */
-    def booleanEncode(booleanExp: BooleanExpression): String = {
-        if (booleanExp == null) {
-            System.err.println("BooleanExpression object is null!")
-            return ""
-        }
+    def booleanEncode(booleanExp: BooleanExpression): Option[String] = {
+        booleanExp match {
+            case null =>
+                System.err.println("BooleanExpression object is null!")
+                None
+            case _ => Some(booleanExp.asJson.noSpaces)
 
-        booleanExp.asJson.noSpaces
+        }
     }
 
     /**
