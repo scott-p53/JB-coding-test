@@ -1,4 +1,4 @@
-# JB-internship-problems
+# JB-coding-test
 A repository to solve the JetBrains coding problems
 
 # What Projects Interest Me
