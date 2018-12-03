@@ -36,7 +36,7 @@ class AlgebraicTransformer {
                 case False => True
                 case Not(innerExp) => pushDownNegations(innerExp)
                 case And(e1, e2) => Or(pushDownNegations(Not(e1)), pushDownNegations(Not(e2)))
-                case Or(e1, e2) =>  And(Not(pushDownNegations(e1)), Not(pushDownNegations(e2)))
+                case Or(e1, e2) =>  And(pushDownNegations(Not(e1)), pushDownNegations(Not(e2)))
             }
             case And(e1, e2) => And(pushDownNegations(e1), pushDownNegations(e2))
             case Or(e1, e2) => Or(pushDownNegations(e1), pushDownNegations(e2))
